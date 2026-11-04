@@ -1,0 +1,181 @@
+{
+  "club": "Batchworth Park Golf Club",
+  "course": "Batchworth Park",
+  "location": "Hertfordshire",
+  "par": 72,
+  "tees": [
+    {
+      "id": "white",
+      "name": "White",
+      "courseRating": 71.5,
+      "slopeRating": 133,
+      "par": 72,
+      "yardsTotal": 6399,
+      "yardsOut": 3116,
+      "yardsIn": 3283,
+      "default": true
+    },
+    {
+      "id": "yellow",
+      "name": "Yellow",
+      "courseRating": 70,
+      "slopeRating": 127,
+      "par": 72,
+      "yardsTotal": 6061,
+      "yardsOut": 2938,
+      "yardsIn": 3123,
+      "default": false
+    },
+    {
+      "id": "blue",
+      "name": "Blue",
+      "courseRating": 72.8,
+      "slopeRating": 132,
+      "par": 72,
+      "yardsTotal": 6723,
+      "yardsOut": 3264,
+      "yardsIn": 3459,
+      "default": false
+    },
+    {
+      "id": "red",
+      "name": "Red",
+      "courseRating": 67.6,
+      "slopeRating": 123,
+      "par": 72,
+      "yardsTotal": 5556,
+      "yardsOut": 2733,
+      "yardsIn": 2823,
+      "default": false,
+      "strokeIndexSet": "ladies"
+    }
+  ],
+  "holes": [
+    {
+      "number": 1,
+      "par": 4,
+      "strokeIndex": 9,
+      "strokeIndexLadies": 12,
+      "yards": { "white": 408, "yellow": 364, "blue": 424, "red": 340 }
+    },
+    {
+      "number": 2,
+      "par": 4,
+      "strokeIndex": 11,
+      "strokeIndexLadies": 6,
+      "yards": { "white": 343, "yellow": 332, "blue": 361, "red": 305 }
+    },
+    {
+      "number": 3,
+      "par": 4,
+      "strokeIndex": 1,
+      "strokeIndexLadies": 2,
+      "yards": { "white": 439, "yellow": 401, "blue": 439, "red": 370 }
+    },
+    {
+      "number": 4,
+      "par": 3,
+      "strokeIndex": 13,
+      "strokeIndexLadies": 18,
+      "yards": { "white": 124, "yellow": 105, "blue": 150, "red": 102 }
+    },
+    {
+      "number": 5,
+      "par": 4,
+      "strokeIndex": 15,
+      "strokeIndexLadies": 14,
+      "yards": { "white": 314, "yellow": 302, "blue": 314, "red": 291 }
+    },
+    {
+      "number": 6,
+      "par": 3,
+      "strokeIndex": 5,
+      "strokeIndexLadies": 16,
+      "yards": { "white": 203, "yellow": 178, "blue": 234, "red": 157 }
+    },
+    {
+      "number": 7,
+      "par": 5,
+      "strokeIndex": 17,
+      "strokeIndexLadies": 8,
+      "yards": { "white": 468, "yellow": 468, "blue": 493, "red": 435 }
+    },
+    {
+      "number": 8,
+      "par": 4,
+      "strokeIndex": 3,
+      "strokeIndexLadies": 4,
+      "yards": { "white": 336, "yellow": 336, "blue": 351, "red": 316 }
+    },
+    {
+      "number": 9,
+      "par": 5,
+      "strokeIndex": 7,
+      "strokeIndexLadies": 10,
+      "yards": { "white": 481, "yellow": 452, "blue": 498, "red": 417 }
+    },
+    {
+      "number": 10,
+      "par": 4,
+      "strokeIndex": 18,
+      "strokeIndexLadies": 17,
+      "yards": { "white": 305, "yellow": 293, "blue": 326, "red": 265 }
+    },
+    {
+      "number": 11,
+      "par": 4,
+      "strokeIndex": 6,
+      "strokeIndexLadies": 3,
+      "yards": { "white": 395, "yellow": 385, "blue": 407, "red": 355 }
+    },
+    {
+      "number": 12,
+      "par": 3,
+      "strokeIndex": 16,
+      "strokeIndexLadies": 15,
+      "yards": { "white": 157, "yellow": 140, "blue": 167, "red": 135 }
+    },
+    {
+      "number": 13,
+      "par": 5,
+      "strokeIndex": 4,
+      "strokeIndexLadies": 1,
+      "yards": { "white": 544, "yellow": 534, "blue": 556, "red": 507 }
+    },
+    {
+      "number": 14,
+      "par": 5,
+      "strokeIndex": 8,
+      "strokeIndexLadies": 9,
+      "yards": { "white": 562, "yellow": 545, "blue": 581, "red": 435 }
+    },
+    {
+      "number": 15,
+      "par": 3,
+      "strokeIndex": 12,
+      "strokeIndexLadies": 13,
+      "yards": { "white": 188, "yellow": 168, "blue": 219, "red": 141 }
+    },
+    {
+      "number": 16,
+      "par": 4,
+      "strokeIndex": 2,
+      "strokeIndexLadies": 5,
+      "yards": { "white": 390, "yellow": 378, "blue": 429, "red": 346 }
+    },
+    {
+      "number": 17,
+      "par": 4,
+      "strokeIndex": 14,
+      "strokeIndexLadies": 7,
+      "yards": { "white": 352, "yellow": 342, "blue": 384, "red": 328 }
+    },
+    {
+      "number": 18,
+      "par": 4,
+      "strokeIndex": 10,
+      "strokeIndexLadies": 11,
+      "yards": { "white": 390, "yellow": 338, "blue": 390, "red": 311 }
+    }
+  ]
+}

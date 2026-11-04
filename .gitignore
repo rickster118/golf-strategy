@@ -18,6 +18,8 @@ node_modules/
 dist/
 build/
 target/
+data/*.db
+data/*.db-*
 .venv/
 __pycache__/
 *.pyc
