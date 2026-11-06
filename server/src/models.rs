@@ -199,6 +199,7 @@ pub struct RoundSummary {
     pub points: i32,
     pub holes_completed: i32,
     pub played_gross: i32,
+    pub played_adjusted: i32,
     pub played_vs_par: i32,
     pub picked_up_count: i32,
 }
@@ -220,6 +221,8 @@ pub struct HoleStats {
     pub worst: Option<i32>,
     pub avg_points: Option<f64>,
     pub avg_vs_par: Option<f64>,
+    pub avg_vs_shots: Option<f64>,
+    pub avg_shots: Option<f64>,
     pub birdies_or_better: i32,
     pub pars: i32,
     pub bogeys: i32,

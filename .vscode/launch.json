@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Start locally",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/web/src",
+      "preLaunchTask": "Start API and web"
+    },
+    {
+      "name": "Debug API",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/server/target/debug/golf-strategy.exe",
+      "cwd": "${workspaceFolder}/server",
+      "preLaunchTask": "cargo build",
+      "console": "integratedTerminal"
+    }
+  ]
+}

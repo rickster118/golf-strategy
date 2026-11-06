@@ -238,6 +238,21 @@ th {
   letter-spacing: 0.04em;
 }
 
+th button.sort {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+th button.sort.on {
+  color: var(--text);
+}
+
 tr.clickable {
   cursor: pointer;
 }
@@ -530,6 +545,30 @@ textarea {
 .empty {
   color: var(--muted);
   padding: 24px 0;
+}
+
+.key {
+  margin: 18px 0 0;
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.key div {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.key dt {
+  min-width: 9.5rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.key dd {
+  margin: 0;
 }
 
 .filter-pills {

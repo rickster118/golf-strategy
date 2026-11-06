@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { fmt, formatName, vsPar } from "../format";
+import { fmt, formatName, vsPar, vsSigned } from "../format";
 import { useStats } from "../hooks";
 import { usePlayer } from "../player";
 
@@ -82,7 +82,9 @@ export default function Dashboard() {
       )}
 
       <h2>Problem holes</h2>
-      <p className="sub">Hole form uses the last 10 times each hole was played. Round totals above use every complete round.</p>
+      <p className="sub">
+        The last 10 times each hole was played. The number is against the shots received on that hole, so a 1-shot hole and a 2-shot hole can be compared. A minus is better. Attack is −0.3 or better. Survival is +0.5 or worse. Round totals above use every complete round.
+      </p>
       <HolePills holes={stats.problemHoles} all={stats.holes} />
       <h2>Scoring holes</h2>
       <HolePills holes={stats.scoringHoles} all={stats.holes} />
@@ -95,7 +97,7 @@ function HolePills({
   all,
 }: {
   holes: number[];
-  all: { number: number; par: number; avgVsPar: number | null; strategy: string }[];
+  all: { number: number; par: number; avgVsShots: number | null; strategy: string }[];
 }) {
   if (!holes.length) return <p className="empty">Need at least two completed scores on a hole.</p>;
   return (
@@ -106,7 +108,7 @@ function HolePills({
           <Link key={n} to={`/holes/${n}`} className="card hole-card">
             <div className="n">Hole {n} · par {h?.par}</div>
             <div className="value" style={{ fontSize: 20 }}>
-              {h?.avgVsPar != null ? vsPar(Number(h.avgVsPar.toFixed(1))) : "—"}
+              {vsSigned(h?.avgVsShots)}
             </div>
             <span className="chip">{h?.strategy}</span>
           </Link>

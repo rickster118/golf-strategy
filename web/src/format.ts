@@ -10,6 +10,12 @@ export function vsPar(n: number | null | undefined): string {
   return String(n);
 }
 
+/** One decimal, with a plus when over. Even is E. */
+export function vsSigned(n: number | null | undefined): string {
+  if (n === null || n === undefined || Number.isNaN(n)) return "—";
+  return vsPar(Number(n.toFixed(1)));
+}
+
 export function formatName(f: string): string {
   if (f === "stableford") return "Stableford";
   if (f === "medal") return "Medal";

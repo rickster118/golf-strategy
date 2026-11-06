@@ -74,6 +74,7 @@ export type RoundSummary = {
   points: number;
   holesCompleted: number;
   playedGross: number;
+  playedAdjusted: number;
   playedVsPar: number;
   pickedUpCount: number;
 };
@@ -93,6 +94,8 @@ export type HoleStats = {
   worst: number | null;
   avgPoints: number | null;
   avgVsPar: number | null;
+  avgVsShots: number | null;
+  avgShots: number | null;
   birdiesOrBetter: number;
   pars: number;
   bogeys: number;

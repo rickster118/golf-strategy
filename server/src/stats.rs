@@ -87,6 +87,14 @@ pub fn summarise(round: &RoundRow, holes: &[HoleScoreOut]) -> RoundSummary {
     let holes_completed = played.len() as i32;
     let picked_up_count = holes.iter().filter(|h| h.picked_up).count() as i32;
     let played_gross: i32 = played.iter().map(|h| h.strokes.unwrap_or(0)).sum();
+    let played_adjusted: i32 = played
+        .iter()
+        .map(|h| {
+            let strokes = h.strokes.unwrap_or(0);
+            let cap = h.par + 2 + h.strokes_received;
+            strokes.min(cap)
+        })
+        .sum();
     let played_par: i32 = played.iter().map(|h| h.par).sum();
     let played_vs_par = played_gross - played_par;
     let gross = if holes_completed == 18 {
@@ -109,6 +117,7 @@ pub fn summarise(round: &RoundRow, holes: &[HoleScoreOut]) -> RoundSummary {
         points,
         holes_completed,
         played_gross,
+        played_adjusted,
         played_vs_par,
         picked_up_count,
     }
@@ -122,14 +131,17 @@ fn mean(xs: &[f64]) -> Option<f64> {
     }
 }
 
-fn strategy(avg_vs_par: Option<f64>, completed: i32) -> String {
+/// Compared with the shots received on that hole.
+/// −0.3 or better is attack. +0.5 or worse is survival. Between those is play to handicap.
+fn strategy(avg_vs_shots: Option<f64>, completed: i32) -> String {
     if completed < 2 {
         return "Need more data".into();
     }
-    let v = avg_vs_par.unwrap_or(99.0);
-    if v <= 0.35 {
+    let v = avg_vs_shots.unwrap_or(99.0);
+    // The cutoffs are not exact in binary, so a hair on the line still counts as the line.
+    if v <= -0.3 + 1e-6 {
         "Attack".into()
-    } else if v >= 1.5 {
+    } else if v >= 0.5 - 1e-6 {
         "Survival".into()
     } else {
         "Play to handicap".into()
@@ -173,6 +185,8 @@ pub fn compute_stats(course: &CourseFile, rounds: &[(RoundRow, Vec<HoleScoreOut>
         let mut gir_att = 0;
         let mut gir_hit = 0;
         let mut putts = Vec::new();
+        let mut vs_shots = Vec::new();
+        let mut shots = Vec::new();
 
         let mut recent: Vec<(&str, i64, &HoleScoreOut)> = rounds
             .iter()
@@ -196,6 +210,8 @@ pub fn compute_stats(course: &CourseFile, rounds: &[(RoundRow, Vec<HoleScoreOut>
                 if let Some(s) = h.strokes {
                     grosses.push(s);
                     let vs = s - card.par;
+                    vs_shots.push((vs - h.strokes_received) as f64);
+                    shots.push(h.strokes_received as f64);
                     if vs <= -1 {
                         birdies += 1;
                     } else if vs == 0 {
@@ -228,6 +244,7 @@ pub fn compute_stats(course: &CourseFile, rounds: &[(RoundRow, Vec<HoleScoreOut>
         let completed = grosses.len() as i32;
         let avg_gross = mean(&grosses.iter().map(|g| *g as f64).collect::<Vec<_>>());
         let avg_vs_par = avg_gross.map(|g| g - card.par as f64);
+        let avg_vs_shots = mean(&vs_shots);
         hole_stats.push(HoleStats {
             number: card.number,
             par: card.par,
@@ -243,6 +260,8 @@ pub fn compute_stats(course: &CourseFile, rounds: &[(RoundRow, Vec<HoleScoreOut>
             worst: grosses.iter().copied().max(),
             avg_points: mean(&pts),
             avg_vs_par,
+            avg_vs_shots,
+            avg_shots: mean(&shots),
             birdies_or_better: birdies,
             pars,
             bogeys,
@@ -252,7 +271,7 @@ pub fn compute_stats(course: &CourseFile, rounds: &[(RoundRow, Vec<HoleScoreOut>
             gir_attempts: gir_att,
             gir_hits: gir_hit,
             avg_putts: mean(&putts),
-            strategy: strategy(avg_vs_par, completed),
+            strategy: strategy(avg_vs_shots, completed),
         });
     }
 
@@ -261,16 +280,16 @@ pub fn compute_stats(course: &CourseFile, rounds: &[(RoundRow, Vec<HoleScoreOut>
         .filter(|h| h.completed >= 2)
         .collect();
     ranked.sort_by(|a, b| {
-        b.avg_vs_par
+        b.avg_vs_shots
             .unwrap_or(-99.0)
-            .partial_cmp(&a.avg_vs_par.unwrap_or(-99.0))
+            .partial_cmp(&a.avg_vs_shots.unwrap_or(-99.0))
             .unwrap()
     });
     let problem_holes: Vec<i32> = ranked.iter().take(3).map(|h| h.number).collect();
     ranked.sort_by(|a, b| {
-        a.avg_vs_par
+        a.avg_vs_shots
             .unwrap_or(99.0)
-            .partial_cmp(&b.avg_vs_par.unwrap_or(99.0))
+            .partial_cmp(&b.avg_vs_shots.unwrap_or(99.0))
             .unwrap()
     });
     let scoring_holes: Vec<i32> = ranked.iter().take(3).map(|h| h.number).collect();
@@ -312,4 +331,19 @@ pub fn hole_history(scored: &[(RoundRow, Vec<HoleScoreOut>)], hole: i32) -> Vec<
     points.sort_by(|a, b| a.played_on.cmp(&b.played_on).then(a.round_id.cmp(&b.round_id)));
     let start = points.len().saturating_sub(10);
     points.split_off(start)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::strategy;
+
+    #[test]
+    fn attack_at_minus_0_3_survival_at_plus_0_5() {
+        assert_eq!(strategy(Some(-0.3), 2), "Attack");
+        assert_eq!(strategy(Some(-0.29), 2), "Play to handicap");
+        assert_eq!(strategy(Some(0.0), 2), "Play to handicap");
+        assert_eq!(strategy(Some(0.49), 2), "Play to handicap");
+        assert_eq!(strategy(Some(0.5), 2), "Survival");
+        assert_eq!(strategy(Some(0.0), 1), "Need more data");
+    }
 }

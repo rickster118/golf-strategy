@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
-import { fmt, strategyClass, vsPar } from "../format";
+import { fmt, strategyClass, vsPar, vsSigned } from "../format";
 import { useStats } from "../hooks";
 import { usePlayer } from "../player";
 import type { HoleHistoryPoint } from "../types";
@@ -53,6 +53,10 @@ export default function HoleDetail() {
       </div>
       <p>
         <span className={`chip ${strategyClass(h.strategy)}`}>{h.strategy}</span>
+        <span className="muted">
+          {" "}
+          · −0.3 or better than the shots received is attack. +0.5 or worse is survival. Between those is play to handicap.
+        </span>
       </p>
       <div className="charts">
         <div className="card">
@@ -71,6 +75,8 @@ export default function HoleDetail() {
         <Stat label="Completed" value={h.completed} hint={`${h.pickups} pick-ups`} />
         <Stat label="Avg gross" value={fmt(h.avgGross)} />
         <Stat label="Vs par" value={vsPar(h.avgVsPar != null ? Number(h.avgVsPar.toFixed(1)) : null)} />
+        <Stat label="Shots rec." value={fmt(h.avgShots)} />
+        <Stat label="Vs shots" value={vsSigned(h.avgVsShots)} hint="Against the shots received. A minus is better." />
         <Stat label="Best / worst" value={`${h.best ?? "—"} / ${h.worst ?? "—"}`} />
         <Stat label="Avg points" value={fmt(h.avgPoints)} />
         <Stat label="Birdie+" value={h.birdiesOrBetter} />
